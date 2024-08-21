@@ -18,7 +18,7 @@ $$
 
 #### Current release:
 
-cuLoRADS is currently under active development. A pre-built binary that processes SDPA (.dat-s) format files is available. Users testing the solver on Linux can download the release from [the release site](https://github.com/COPT-Public/cuLoRADS/releases/tag/v0.1.0).
+cuLoRADS is currently under active development. A pre-built binary that processes SDPA (.dat-s) format files is available. Users testing the solver on Linux can download the release from [the release site](https://github.com/COPT-Public/cuLoRADS/releases).
 
 Then, uncompress the .tar.gz by running
 
