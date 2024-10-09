@@ -1,6 +1,6 @@
 ## **[cuLoRADS](https://github.com/COPT-Public/cuLoRADS)**
 
-cuLoRADS is an enhanced GPU-based first-order method solver written in Julia for low-rank semi-definite programming problems (SDPs). 
+cuLoRADS is an enhanced GPU-based first-order method solver written in Julia for low-rank semi-definite programming problems (SDPs). It is developed based on methodologies described in [this paper](https://arxiv.org/abs/2407.15049).
 
 #### Optimization Problem:
 
@@ -201,7 +201,8 @@ For example, to set **timesLogRank** to 1.0 and solve a problem, we can execute
 ```
 ./bin/cuLoRADS --filePath /PATH/TO/SDPAFILE.dat-s --timesLogRank 1.0
 ```
-* For the details of the reopt technique and the parameter reoptLevel, please refer to the paper.
+* For the details of the reopt technique and the parameter reoptLevel, please refer to [the paper](https://arxiv.org/abs/2407.15049).
+
 
 
 #### Developing Team
