@@ -1,0 +1,7 @@
+cuLoRADS 1.1.0 binary distribution
+
+Copyright (c) 2024 COPT-Public
+
+This distribution contains a precompiled cuLoRADS executable. The
+implementation source is not included. See THIRD_PARTY_NOTICES.md for bundled
+runtime components and their separate license terms.

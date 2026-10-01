@@ -1,0 +1,9 @@
+" Two-dimensional SDP: minimize -2 X12, X11 = X22 = 1, X >= 0.
+" Optimum -2, attained by the all-ones matrix.
+2
+1
+2
+1 1
+0 1 1 2 1
+1 1 1 1 1
+2 1 2 2 1

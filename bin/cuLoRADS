@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+bin_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+package_dir="$(cd -- "$bin_dir/.." && pwd)"
+runtime="$bin_dir/cuLoRADS.bin"
+
+if [[ -n "${CULORADS_CACHE_DIR:-}" ]]; then
+    cache_dir="$CULORADS_CACHE_DIR"
+elif [[ -n "${XDG_CACHE_HOME:-}" ]]; then
+    cache_dir="$XDG_CACHE_HOME/cuLoRADS/1.1.0"
+elif [[ -n "${HOME:-}" ]]; then
+    cache_dir="$HOME/.cache/cuLoRADS/1.1.0"
+else
+    cache_dir="${TMPDIR:-/tmp}/cuLoRADS-${UID:-user}/1.1.0"
+fi
+
+if ! mkdir -p "$cache_dir" 2>/dev/null; then
+    cache_dir="${TMPDIR:-/tmp}/cuLoRADS-${UID:-user}/1.1.0"
+    mkdir -p "$cache_dir"
+fi
+
+export JULIA_DEPOT_PATH="$cache_dir:$package_dir/share/julia"
+export JULIA_PKG_OFFLINE=true
+
+exec "$runtime" "$@"

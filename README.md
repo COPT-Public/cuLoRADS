@@ -1,235 +1,117 @@
-## **[cuLoRADS](https://github.com/COPT-Public/cuLoRADS)**
+# cuLoRADS
 
-cuLoRADS is an enhanced GPU-based first-order method solver written in Julia for low-rank semi-definite programming problems (SDPs). It is developed based on methodologies described in [this paper](https://arxiv.org/abs/2407.15049).
+[![Package checks](https://github.com/COPT-Public/cuLoRADS/actions/workflows/package-checks.yml/badge.svg)](https://github.com/COPT-Public/cuLoRADS/actions/workflows/package-checks.yml)
 
-#### Optimization Problem:
+cuLoRADS is a GPU solver for semidefinite programs based on low-rank
+factorization, augmented-Lagrangian iterations, and ADMM. This repository
+distributes a precompiled Linux application. The cuLoRADS implementation
+source is not included.
 
-cuLoRADS focuses on solving the following SDP problem:
+Current version: `1.1.0`.
 
-$$
-\min_{\mathcal{A} \mathbf{X} = \mathbf{b}, \mathbf{X}\in \mathbb{S}_+^n} \left\langle \mathbf{C}, \mathbf{X} \right\rangle
-$$
+- Project repository: <https://github.com/COPT-Public/cuLoRADS>
+- Downloads: <https://github.com/COPT-Public/cuLoRADS/releases>
+- Issues: <https://github.com/COPT-Public/cuLoRADS/issues>
 
-##### Features of the problem:
+## Authors
 
-- linear objective
-- affine constraints
-- positive-semidefinite variables
+The authors of the associated cuLoRADS paper, in publication order, are
+Qiushi Han, Zhenwei Lin, Hanwen Liu, Caihua Chen, Qi Deng, Dongdong Ge, and
+Yinyu Ye. Qiushi Han is the release contact. See [AUTHORS](AUTHORS) and
+[CITATION.cff](CITATION.cff).
 
-#### Current release:
+## Supported environment
 
-cuLoRADS is currently under active development. A pre-built binary that processes SDPA (.dat-s) format files is available. Users testing the solver on Linux can download the release from [the release site](https://github.com/COPT-Public/cuLoRADS/releases).
+- 64-bit x86 Linux with the AES-NI CPU feature
+- an NVIDIA GPU and working NVIDIA driver
+- a driver compatible with the bundled CUDA 13.3 user-space runtime
+- sufficient host and GPU memory for the selected problem
 
-Then, uncompress the .tar.gz by running
+The 1.1.0 package was built with Julia 1.12.6 for the `generic,+aes` CPU target
+on a system using glibc 2.35. Compatibility with older Linux distributions has
+not been established. Julia and a separate CUDA toolkit are not required.
+There is no CPU solver fallback.
 
-```
-tar -xzvf cuLoRADS.tar.gz
-```
+## Install
 
-#### Getting started:
+Download these two files from the `v1.1.0` release:
 
-By running
+- `cuLoRADS-1.1.0-linux-x86_64.tar.zst`
+- `cuLoRADS-1.1.0-linux-x86_64.tar.zst.sha256`
+
+Then verify and extract the application:
 
 ```sh
-./bin/cuLoRADS --filePath /PATH/TO/SDPAFILE.dat-s --outputPath /PATH/TO/OUTPUT/FOLDER
+sha256sum -c cuLoRADS-1.1.0-linux-x86_64.tar.zst.sha256
+tar --zstd -xf cuLoRADS-1.1.0-linux-x86_64.tar.zst
+cd cuLoRADS-1.1.0-linux-x86_64
+./scripts/verify_install.sh
 ```
 
-we can solve SDPs represented in standard SDPA format.
+Keep the complete extracted directory together. `bin/cuLoRADS` launches the
+compiled program using the adjacent `lib/`, `libexec/`, and `share/` trees;
+neither executable in `bin/` is a standalone installation.
 
+See [INSTALL.md](INSTALL.md) for detailed requirements and troubleshooting.
 
+## Quick start
 
-If everything goes well, we would see logs like below:
+Check GPU access and solve the included two-dimensional example:
 
-```
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-║                                                                                                            ║
-║                            L                           RRRRRR           A          DDDDDD         SSSSSS   ║
-║                            L                           R     R         A A         D     D       S         ║
-║   CCCCC       U    U       L              OOOO         R     R        A   A        D     D       S         ║
-║  C            U    U       L             O    O        RRRRRR        AAAAAAA       D     D        SSSSSS   ║
-║  C            U    U       L             O    O        R    R        A     A       D     D              S  ║
-║  C            U    U       L             O    O        R     R       A     A       D     D              S  ║
-║   CCCCC        UUUU        LLLLLLL        OOOO         R     R       A     A       DDDDDD         SSSSSS   ║
-║                                                                                                            ║
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
-
-@ Solver Parameters
-    ┌──────────────────┬───────────────┐
-  ↳ │ Parameter        │ Value         │
-    ├──────────────────┼───────────────┤
-    │ initRho          │ 0.00e+00      │
-    │ rhoMax           │ 5.00e+03      │
-    │ maxALMIter       │ 200           │
-    │ maxADMMIter      │ 10000         │
-    │ timesLogRank     │ 2.00          │
-    │ ALMRhoFactor     │ 2.00          │
-    │ ADMMRhoFreq      │ 5             │
-    │ ADMMRhoFactor    │ 1.20          │
-    │ phase1Tol        │ 1.00e-03      │
-    │ phase2Tol        │ 1.00e-05      │
-    │ timeSecLimit     │ 40000.00      │
-    │ heuristicFactor  │ 1.00          │
-    │ lbfgsListLength  │ 2             │
-    │ reoptLevel       │ 4             │
-    │ dyrankLevel      │ 2             │
-    │ enhancementMode  │ false         │
-    │ accLevel         │ 1             │
-    └──────────────────┴───────────────┘
-
-➔ Reading Problem File ✅ (2.09 seconds) 
-
-@ Problem Information
-  ↳ sdp block dims: [1296]
-  ↳ lp dim: 0
-  ↳ number of constraints: 1297
-
-@ Storage Format (S --- Sparse or D --- Dense)
-  ↳ objective matrices: [D]
-  ↳ vectorized objective matrix: S
-
-➔ Transfering Date To GPU ✅ (0.28 seconds) 
-
-➔ Initializing GPU Solver ✅ (0.91 seconds) 
-
-┌────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                             Start Phase I: ALM                                             │
-├────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ Initial Ranks: [15]                                                                                        │
-├──────┬─────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬──────────┬──────────┤
-│ Iter │ In Iter │ P Obj       │ D Obj       │ P Infea 1   │ P Infea Inf │ PD Gap      │ Rho      │ Time     │
-├──────┼─────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼──────────┼──────────┤
-│ 1    │ 370     │ -1.8973e+07 │ -2.4862e+04 │ 2.0137e+01  │ 1.3059e+04  │ 9.9738e-01  │ 5.56e-02 │ 1.32     │
-│ 2    │ 786     │ -2.6310e+04 │ -2.4861e+04 │ 7.2640e-03  │ 4.7107e+00  │ 2.8311e-02  │ 1.11e-01 │ 2.06     │
-│ 3    │ 810     │ -2.4900e+04 │ -2.4853e+04 │ 6.4754e-03  │ 4.1993e+00  │ 9.4616e-04  │ 2.22e-01 │ 2.08     │
-│ 4    │ 843     │ -2.4541e+04 │ -2.4835e+04 │ 5.8972e-03  │ 3.8244e+00  │ 5.9400e-03  │ 4.44e-01 │ 2.11     │
-│ 5    │ 877     │ -2.5152e+04 │ -2.4816e+04 │ 4.9622e-03  │ 3.2180e+00  │ 6.7127e-03  │ 8.89e-01 │ 2.14     │
-│ 6    │ 911     │ -2.5057e+04 │ -2.4791e+04 │ 3.7477e-03  │ 2.4304e+00  │ 5.3243e-03  │ 1.78e+00 │ 2.17     │
-├──────┴─────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴──────────┴──────────┤
-│ Updating Ranks ...                                                                                         │
-│ Updated Ranks: [23]                                                                                        │
-├──────┬─────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬──────────┬──────────┤
-│ Iter │ In Iter │ P Obj       │ D Obj       │ P Infea 1   │ P Infea Inf │ PD Gap      │ Rho      │ Time     │
-├──────┼─────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼──────────┼──────────┤
-│ 7    │ 1257    │ -2.4996e+04 │ -2.4770e+04 │ 2.3561e-03  │ 1.5279e+00  │ 4.5306e-03  │ 3.56e+00 │ 2.63     │
-│ 8    │ 1321    │ -2.4904e+04 │ -2.4756e+04 │ 1.3097e-03  │ 8.4933e-01  │ 2.9834e-03  │ 7.11e+00 │ 2.69     │
-│ 9    │ 1380    │ -2.4820e+04 │ -2.4750e+04 │ 5.7590e-04  │ 3.7347e-01  │ 1.4280e-03  │ 1.42e+01 │ 2.75     │
-│ 10   │ 1467    │ -2.4770e+04 │ -2.4748e+04 │ 1.8459e-04  │ 1.1971e-01  │ 4.5195e-04  │ 2.84e+01 │ 2.83     │
-│ 11   │ 1589    │ -2.4752e+04 │ -2.4748e+04 │ 4.0895e-05  │ 2.6520e-02  │ 8.7843e-05  │ 5.69e+01 │ 2.94     │
-│ 12   │ 1621    │ -2.4748e+04 │ -2.4748e+04 │ 7.2906e-06  │ 4.7279e-03  │ 1.0105e-05  │ 1.14e+02 │ 2.97     │
-│ 13   │ 1678    │ -2.4748e+04 │ -2.4748e+04 │ 3.0452e-06  │ 1.9748e-03  │ 7.5823e-07  │ 2.28e+02 │ 3.02     │
-├──────┴─────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴──────────┴──────────┤
-│ Updating Ranks ...                                                                                         │
-│ Updated Ranks: [35]                                                                                        │
-├──────┬─────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬──────────┬──────────┤
-│ Iter │ In Iter │ P Obj       │ D Obj       │ P Infea 1   │ P Infea Inf │ PD Gap      │ Rho      │ Time     │
-├──────┼─────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼──────────┼──────────┤
-│ 14   │ 2422    │ -2.4748e+04 │ -2.4748e+04 │ 1.9263e-06  │ 1.2492e-03  │ 1.6409e-07  │ 4.55e+02 │ 3.78     │
-│ 15   │ 2423    │ -2.4748e+04 │ -2.4748e+04 │ 1.2794e-06  │ 8.2968e-04  │ 3.7709e-08  │ 4.55e+02 │ 3.78     │
-└──────┴─────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴──────────┴──────────┘
-
-┌────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                          Switch To Phase II: ADMM                                          │
-├──────┬─────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬──────────┬──────────┤
-│ Iter │ CG Iter │ P Obj       │ D Obj       │ P Infea 1   │ P Infea Inf │ PD Gap      │ Rho      │ Time     │
-├──────┼─────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼──────────┼──────────┤
-│ 15   │ 119     │ -2.4748e+04 │ -2.4748e+04 │ 1.3007e-08  │ 8.4353e-06  │ 3.9613e-07  │ 6.55e+02 │ 4.34     │
-└──────┴─────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴──────────┴──────────┘
-
-➔ Initial Solving Finished ✅ (4.34 seconds)
-
-➔ Evaluating Dual Infeasibility ✅ (0.03 seconds) 
-
-@ Solution Information
-    ┌────────────────────────────────┬───────────────┐
-  ↳ │ Name                           │ Value         │
-    ├────────────────────────────────┼───────────────┤
-    │ primal objective value         │ -2.474782e+04 │
-    │ dual objective value           │ -2.474780e+04 │
-    │ primal infeasibility (DIMACS)  │ 1.300745e-08  │
-    │ dual infeasibility (DIMACS)    │ 2.950202e-09  │
-    │ primal dual gap (DIMACS)       │ 4.021113e-07  │
-    └────────────────────────────────┴───────────────┘
-
-➔ Problem Solved ✅ (4.34 seconds)
+```sh
+nvidia-smi
+CUDA_VISIBLE_DEVICES=0 ./scripts/run_example.sh
 ```
 
-* **Note:** Even if the Julia application is precompiled, there will still be some dynamic compilation time at runtime due to Julia's Just-In-Time (JIT) compilation mechanism. (up to several seconds per run)
+A successful run prints `Problem Solved` and writes
+`results/tiny.out.mat`. To solve another problem:
 
-#### Environment Requirements:
-
-cuLoRADS runs on Linux systems, with a minimum system requirement of Ubuntu 20.04. We have tested the following configurations, all of which successfully run the software:
-
-* H100 + Ubuntu 22.04
-* RTX 4090 + Ubuntu 22.04
-* A6000 + Ubuntu 20.04
-* A100 + Ubuntu 20.04
-
-
-#### Output Format
-
-If the `outputPath` is set, a `.out.mat` file with the same name as the problem will be written to the selected folder. This file is a standard MAT file containing the following data:
-
-- **primal_sdp**: The low-rank primal solution \( U_i \) for each SDP block \( i \), where \( U_i U_i^\top = X_i \).
-- **primal_lp**: The primal solution vector \(x\) for the LP variable (or the diagonal SDP block).
-- **dual**: The dual solution \( \lambda \).
-
-
-#### Parameters
-
-cuLoRADS provides users with customizable parameters to fine-tune the solving process according to specific problem requirements (if needed). Below is a detailed description of each parameter:
-
-| **Parameter**   | **Description**                                                                            | **Type** | **Default Value** |
-| --------------- | ------------------------------------------------------------------------------------------ | -------- | ----------------- |
-| timesLogRank    | Multiplier for the O(log(m)) rank calculation (rank = **timesLogRank** $\times$ log(m)).   | float    | 2.0               |
-| phase1Tol       | Tolerance for ending Phase I.                                                              | float    | 1e-3              |
-| phase2Tol       | Tolerance for ending Phase II.                                                             | float    | 1e-5              |
-| reoptLevel      | How many times of reopt is allowed (>= 0).                                                 | int      | 4                 |
-| dyrankLevel     | Increases sensitivity to rank update triggers as it rises (select from 0, 1, 2).           | int      | 2                 |
-| enhancementMode | Enhance robustness of the solver and the accuracy of the solution obtained.                | bool     | true              |
-| accLevel        | How accurate the subproblems are solved (select from 0, 1, 2, 3, larger -> more accurate). | int      | 1                 |
-| initRho         | Initial value for the penalty parameter $\rho$.                                            | float    | $1/ \sqrt n$      |
-| rhoMax          | Maximum value for the penalty parameter $\rho$.                                            | float    | 5000.0            |
-| ALMRhoFactor    | Multiplier for increasing $\rho$ ($\rho =$ **ALMRhoFactor** $\times$ $\rho$) in ALM.       | float    | 2.0               |
-| ADMMRhoFreq     | Frequency of increasing $\rho$ (increased every **ADMMRhoFreq** ADMM iterations).          | int      | 5                 |
-| ADMMRhoFactor   | Multiplier for increasing $\rho$ ($\rho =$ **ADMMRhoFactor** $\times$ $\rho$) in ADMM.     | float    | 1.2               |
-| heuristicFactor | Heuristic factor applied when switching to Phase II.                                       | float    | 1.0               |
-| lbfgsListLength | The number of vectors stored for L-BFGS                                                    | int      | 2                 |
-| maxALMIter      | Maximum iteration number for the ADMM algorithm.                                           | int      | 200               |
-| maxADMMIter     | Maximum iteration number for the ADMM algorithm.                                           | int      | 10000             |
-| timeSecLimit    | Solving time limitation in seconds.                                                        | float    | 40000.0           |
-| juliaWarmStart  | Whether run the solver for a few steps then reset it to reduce Julia compilation overhead. | bool     | false             |
-
-For example, to set **`timesLogRank`** to `1.0` and solve a problem, we can execute
-
-```
-./bin/cuLoRADS --filePath /PATH/TO/SDPAFILE.dat-s --timesLogRank 1.0
-```
-* For the details of the reopt technique and the parameter reoptLevel, please refer to [the paper](https://arxiv.org/abs/2407.15049).
-
-* The time reported in the end is **`GPU solving time`**, the evaluation of dual infeasibility is currently on CPU and not included in the reported time.
-
-* Setting **`juliaWarmStart`** to `true` can remove the influence of Julia compilation time when benchmarking.
-
-#### Developing Team
-
-cuLoRADS is developed by 
-
-- Qiushi Han: joshhan2@illinois.edu
-
-#### Reference
-
-- Han, Q., Lin, Z., Liu, H., Chen, C., Deng, Q., Ge, D., & Ye, Y. (2024). Accelerating low-rank factorization-based semidefinite programming algorithms on GPU. *arXiv*. https://doi.org/10.48550/arXiv.2407.15049
-
-```
-@misc{han2024acceleratinglowrankfactorizationbasedsemidefinite,
-      title={Accelerating Low-Rank Factorization-Based Semidefinite Programming Algorithms on GPU}, 
-      author={Qiushi Han and Zhenwei Lin and Hanwen Liu and Caihua Chen and Qi Deng and Dongdong Ge and Yinyu Ye},
-      year={2024},
-      eprint={2407.15049},
-      archivePrefix={arXiv},
-      primaryClass={math.OC},
-      url={https://arxiv.org/abs/2407.15049}, 
-}
+```sh
+mkdir -p /absolute/path/to/results
+CUDA_VISIBLE_DEVICES=0 ./bin/cuLoRADS \
+  --filePath /absolute/path/to/problem.dat-s \
+  --outputPath /absolute/path/to/results \
+  --timeSecLimit 600
 ```
 
-**cuLoRADS is free for academic use. When utilizing cuLoRADS in published works, please cite the source above.**
+`--filePath` accepts sparse SDPA `.dat-s` files and SeDuMi-style `.mat` files
+containing `A` (or `At`), `b`, `c`, and `K`. The output directory must already
+exist. A saved `.out.mat` file contains:
+
+- `primal_sdp`: low-rank factors `U`; reconstruct each SDP block as `U * U'`
+- `primal_lp`: the primal linear-variable vector
+- `dual`: the dual-variable vector
+
+See [docs/CLI.md](docs/CLI.md) for every option and
+[docs/INTEGRATION.md](docs/INTEGRATION.md) for child-process integration.
+
+## Validation
+
+The final 1.1.0 application was verified on an NVIDIA H100 80 GB GPU with
+driver 595.71.05. The packaged example passed the archive integrity check,
+completed with `Problem Solved`, and satisfied independent objective,
+feasibility, and positive-semidefiniteness checks. See
+[docs/VALIDATION.md](docs/VALIDATION.md) for the recorded scope and tolerances.
+
+The repository workflow checks metadata and scripts on hosted Linux. An
+opt-in job validates a published release on a self-hosted NVIDIA runner.
+Hosted CI does not claim GPU coverage.
+
+## License
+
+The cuLoRADS binary distribution and repository documentation are provided
+under the [Apache License 2.0](LICENSE). Bundled Julia, CUDA, and other runtime
+components retain their own licenses; see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the license collection in
+the release archive.
+
+## Citation
+
+Qiushi Han, Zhenwei Lin, Hanwen Liu, Caihua Chen, Qi Deng, Dongdong Ge, and
+Yinyu Ye, “Large-scale semidefinite programming with graphics processing
+units,” *Proceedings of the National Academy of Sciences*, 123(40),
+e2516128123, 2026. <https://doi.org/10.1073/pnas.2516128123>
+
+The preprint is available as [arXiv:2407.15049](https://arxiv.org/abs/2407.15049).
+
+Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
