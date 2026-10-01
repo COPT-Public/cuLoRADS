@@ -108,8 +108,10 @@ the release archive.
 ## Citation
 
 Qiushi Han, Zhenwei Lin, Hanwen Liu, Caihua Chen, Qi Deng, Dongdong Ge, and
-Yinyu Ye, “Accelerating Low-Rank Factorization-Based Semidefinite Programming
-Algorithms on GPU,” arXiv:2407.15049, 2024.
-<https://doi.org/10.48550/arXiv.2407.15049>
+Yinyu Ye, “Large-scale semidefinite programming with graphics processing
+units,” *Proceedings of the National Academy of Sciences*, 123(40),
+e2516128123, 2026. <https://doi.org/10.1073/pnas.2516128123>
+
+The preprint is available as [arXiv:2407.15049](https://arxiv.org/abs/2407.15049).
 
 Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).

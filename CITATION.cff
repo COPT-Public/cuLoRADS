@@ -25,10 +25,14 @@ authors:
     given-names: Yinyu
 preferred-citation:
   type: article
-  title: "Accelerating Low-Rank Factorization-Based Semidefinite Programming Algorithms on GPU"
-  year: 2024
-  doi: "10.48550/arXiv.2407.15049"
-  url: "https://arxiv.org/abs/2407.15049"
+  title: "Large-scale semidefinite programming with graphics processing units"
+  journal: "Proceedings of the National Academy of Sciences"
+  year: 2026
+  volume: 123
+  issue: 40
+  pages: "e2516128123"
+  doi: "10.1073/pnas.2516128123"
+  url: "https://doi.org/10.1073/pnas.2516128123"
   authors:
     - family-names: Han
       given-names: Qiushi
