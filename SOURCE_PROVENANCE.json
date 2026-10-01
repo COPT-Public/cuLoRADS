@@ -1,0 +1,58 @@
+{
+  "project": "cuLoRADS",
+  "version": "1.1.0",
+  "release_preparation": "20261001-r3",
+  "preparation_date": "2026-10-01",
+  "distribution_repository": "https://github.com/COPT-Public/cuLoRADS",
+  "distribution_type": "binary-only",
+  "implementation_source_included": false,
+  "license": "Apache-2.0",
+  "target": "linux-x86_64",
+  "reference_paper": {
+    "title": "Accelerating Low-Rank Factorization-Based Semidefinite Programming Algorithms on GPU",
+    "arxiv": "2407.15049",
+    "doi": "10.48550/arXiv.2407.15049",
+    "authors": [
+      "Qiushi Han",
+      "Zhenwei Lin",
+      "Hanwen Liu",
+      "Caihua Chen",
+      "Qi Deng",
+      "Dongdong Ge",
+      "Yinyu Ye"
+    ]
+  },
+  "archive": {
+    "file": "cuLoRADS-1.1.0-linux-x86_64.tar.zst",
+    "size_bytes": 1568987660,
+    "sha256": "6f055f8866d2c985db4d042862ca1e2f39bc23c5fa6adcf4012470bc6bf7496c",
+    "root_directory": "cuLoRADS-1.1.0-linux-x86_64",
+    "internal_manifest": "cuLoRADS-1.1.0-linux-x86_64/SHA256SUMS"
+  },
+  "outer_binary_copies": {
+    "relationship": "Byte-identical inspection copies of the launcher and compiled entry point in the release archive; the complete extracted runtime tree is required to run them.",
+    "sha256": {
+      "cuLoRADS": "43def3d34a47a982c51b6643c434882b0b3b2a6e1ea8d18dffa70315622a9437",
+      "cuLoRADS.bin": "da0e61f21ba2a17d3f8038b51c605a49d69298f4091b85bc148ac93100c8d842"
+    }
+  },
+  "build_record": {
+    "source_repository_visibility": "non-public",
+    "source_repository": null,
+    "source_revision": "85d9642c88b25a9b4160070f27676dfaee9bd7b3",
+    "source_revision_date": "2026-09-30T10:21:59-05:00",
+    "source_scope": "cuLoRADS 1.1.0 including the small sparse-SDPA initial-capacity correction",
+    "verification_boundary": "The binary build revision is recorded by the maintainer but cannot be independently inspected from this binary-only repository.",
+    "diagnostic_path_metadata": "Build-host paths were normalized to a neutral release-build prefix without changing solver code or data."
+  },
+  "runtime": {
+    "cpu_target": "generic,+aes",
+    "build_glibc": "2.35",
+    "julia_runtime": "1.12.6",
+    "cuda_jl": "6.2.1",
+    "bundled_cuda_runtime_preference": "13.3",
+    "gpu_required": true
+  },
+  "validation": "docs/VALIDATION.md",
+  "third_party_notice": "THIRD_PARTY_NOTICES.md"
+}

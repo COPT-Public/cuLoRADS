@@ -1,0 +1,7 @@
+# Release payloads are published as GitHub Release assets, not Git blobs.
+/cuLoRADS-*-linux-x86_64.tar.zst
+/cuLoRADS-*-linux-x86_64/
+/results/
+*.run.log
+*.out.mat
+__pycache__/

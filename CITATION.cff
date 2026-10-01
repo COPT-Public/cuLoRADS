@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use cuLoRADS, please cite this software release and the associated method paper."
+title: "cuLoRADS"
+type: software
+version: "1.1.0"
+date-released: "2026-10-01"
+license: Apache-2.0
+repository-code: "https://github.com/COPT-Public/cuLoRADS"
+url: "https://github.com/COPT-Public/cuLoRADS"
+authors:
+  - family-names: Han
+    given-names: Qiushi
+    email: joshhan477@gmail.com
+  - family-names: Lin
+    given-names: Zhenwei
+  - family-names: Liu
+    given-names: Hanwen
+  - family-names: Chen
+    given-names: Caihua
+  - family-names: Deng
+    given-names: Qi
+  - family-names: Ge
+    given-names: Dongdong
+  - family-names: Ye
+    given-names: Yinyu
+preferred-citation:
+  type: article
+  title: "Accelerating Low-Rank Factorization-Based Semidefinite Programming Algorithms on GPU"
+  year: 2024
+  doi: "10.48550/arXiv.2407.15049"
+  url: "https://arxiv.org/abs/2407.15049"
+  authors:
+    - family-names: Han
+      given-names: Qiushi
+    - family-names: Lin
+      given-names: Zhenwei
+    - family-names: Liu
+      given-names: Hanwen
+    - family-names: Chen
+      given-names: Caihua
+    - family-names: Deng
+      given-names: Qi
+    - family-names: Ge
+      given-names: Dongdong
+    - family-names: Ye
+      given-names: Yinyu
