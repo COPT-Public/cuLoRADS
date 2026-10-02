@@ -3,11 +3,33 @@
   "version": "1.1.0",
   "release_preparation": "20261001-r3",
   "preparation_date": "2026-10-01",
+  "last_updated_at_utc": "2026-10-02T04:31:03Z",
   "distribution_repository": "https://github.com/COPT-Public/cuLoRADS",
   "distribution_type": "binary-only",
   "implementation_source_included": false,
+  "source_build_supported_from_distribution": false,
   "license": "Apache-2.0",
   "target": "linux-x86_64",
+  "public_release": {
+    "tag": "v1.1.0",
+    "url": "https://github.com/COPT-Public/cuLoRADS/releases/tag/v1.1.0",
+    "published_at_utc": "2026-10-02T01:18:52Z",
+    "repository_commit": "0703021535d42e1503390c563a6b3c44a4e7abdc",
+    "draft": false,
+    "prerelease": false,
+    "assets": {
+      "archive": {
+        "name": "cuLoRADS-1.1.0-linux-x86_64.tar.zst",
+        "size_bytes": 1568987660,
+        "github_digest": "sha256:6f055f8866d2c985db4d042862ca1e2f39bc23c5fa6adcf4012470bc6bf7496c"
+      },
+      "checksum": {
+        "name": "cuLoRADS-1.1.0-linux-x86_64.tar.zst.sha256",
+        "size_bytes": 102,
+        "github_digest": "sha256:aae194164326075d70f605ecb365323050187ea862f53af9b23fad4b80016e33"
+      }
+    }
+  },
   "reference_paper": {
     "title": "Large-scale semidefinite programming with graphics processing units",
     "journal": "Proceedings of the National Academy of Sciences",
@@ -57,6 +79,17 @@
     "cuda_jl": "6.2.1",
     "bundled_cuda_runtime_preference": "13.3",
     "gpu_required": true
+  },
+  "repository_ci": {
+    "tag_run": "https://github.com/COPT-Public/cuLoRADS/actions/runs/36950333734",
+    "tag_run_conclusion": "success",
+    "main_run": "https://github.com/COPT-Public/cuLoRADS/actions/runs/36940903219",
+    "main_run_conclusion": "success",
+    "gpu_release_job": "manual opt-in on a configured self-hosted NVIDIA runner"
+  },
+  "coin_or_source_requirement": {
+    "status": "not_satisfied_by_binary_only_distribution",
+    "explanation": "Implementation source and a source build system are intentionally omitted; this package can only be evaluated as a binary distribution or external component."
   },
   "validation": "docs/VALIDATION.md",
   "third_party_notice": "THIRD_PARTY_NOTICES.md"

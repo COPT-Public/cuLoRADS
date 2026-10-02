@@ -3,6 +3,8 @@ name: Binary package checks
 on:
   push:
   pull_request:
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       release_tag:
@@ -27,6 +29,37 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify the binary-only repository
         run: bash scripts/check_repository.sh
+
+  release-integrity:
+    name: Published release / integrity
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check archive tools
+        run: |
+          command -v curl
+          command -v sha256sum
+          command -v tar
+          command -v zstd
+      - name: Download the published release assets
+        run: |
+          release_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$RELEASE_TAG"
+          curl -fL --retry 3 -O \
+            "$release_url/cuLoRADS-1.1.0-linux-x86_64.tar.zst"
+          curl -fL --retry 3 -O \
+            "$release_url/cuLoRADS-1.1.0-linux-x86_64.tar.zst.sha256"
+      - name: Verify archive identity, layout, and internal manifest
+        run: |
+          bash scripts/check_package.sh
+          mkdir -p _release_integrity
+          tar --zstd -xf cuLoRADS-1.1.0-linux-x86_64.tar.zst \
+            -C _release_integrity
+          package="$PWD/_release_integrity/cuLoRADS-1.1.0-linux-x86_64"
+          (cd "$package" && sha256sum --check --quiet SHA256SUMS)
 
   gpu-release:
     name: Published release / NVIDIA GPU

@@ -13,6 +13,20 @@ Current version: `1.1.0`.
 - Downloads: <https://github.com/COPT-Public/cuLoRADS/releases>
 - Issues: <https://github.com/COPT-Public/cuLoRADS/issues>
 
+## Distribution scope
+
+This repository supports installation, integrity verification, command-line
+use, numerical smoke testing, and integration of the published executable. It
+does not contain the implementation source or a source build system, so an
+independent source build and source-level audit are not possible from this
+repository. Apache-2.0 applies to the distributed cuLoRADS binary and public
+repository materials; it does not make omitted source files available.
+
+Consequently, this package can be reviewed as a versioned binary distribution
+or external binary component, but it does not satisfy a requirement that a
+COIN-OR contribution include buildable implementation source. See
+[COIN_OR_READINESS.md](COIN_OR_READINESS.md) for the checklist mapping.
+
 ## Authors
 
 The authors of the associated cuLoRADS paper, in publication order, are
@@ -34,7 +48,8 @@ There is no CPU solver fallback.
 
 ## Install
 
-Download these two files from the `v1.1.0` release:
+Download these two files from the
+[`v1.1.0` release](https://github.com/COPT-Public/cuLoRADS/releases/tag/v1.1.0):
 
 - `cuLoRADS-1.1.0-linux-x86_64.tar.zst`
 - `cuLoRADS-1.1.0-linux-x86_64.tar.zst.sha256`
@@ -94,8 +109,10 @@ feasibility, and positive-semidefiniteness checks. See
 [docs/VALIDATION.md](docs/VALIDATION.md) for the recorded scope and tolerances.
 
 The repository workflow checks metadata and scripts on hosted Linux. An
-opt-in job validates a published release on a self-hosted NVIDIA runner.
-Hosted CI does not claim GPU coverage.
+automatic or manually dispatched hosted job downloads the published assets and
+checks the archive checksum, layout, source boundary, and internal manifest. An
+opt-in job runs the published application and numerical checker on a configured
+self-hosted NVIDIA runner. Hosted CI does not claim GPU coverage.
 
 ## License
 
