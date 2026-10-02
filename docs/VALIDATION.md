@@ -2,6 +2,14 @@
 
 Project repository: https://github.com/COPT-Public/cuLoRADS
 
+Public release: https://github.com/COPT-Public/cuLoRADS/releases/tag/v1.1.0
+
+The Release contains both the application archive and its independent checksum
+file. Repository/tag CI completed successfully. The hosted release-integrity
+job verifies downloaded assets without claiming GPU execution; the opt-in
+self-hosted NVIDIA job additionally executes and numerically verifies the tiny
+SDP example.
+
 ## Build identity
 
 - cuLoRADS version: 1.1.0

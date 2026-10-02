@@ -6,6 +6,7 @@ repo_dir="$(cd -- "$script_dir/.." && pwd)"
 
 required=(
     README.md
+    COIN_OR_READINESS.md
     INSTALL.md
     LICENSE
     NOTICE
@@ -48,6 +49,7 @@ fi
 grep -Fq 'Current version: `1.1.0`' "$repo_dir/README.md"
 grep -Fq 'version: "1.1.0"' "$repo_dir/CITATION.cff"
 grep -Fq 'license: Apache-2.0' "$repo_dir/CITATION.cff"
+grep -Fq '10.1073/pnas.2516128123' "$repo_dir/CITATION.cff"
 grep -Fq 'Apache License' "$repo_dir/LICENSE"
 
 python3 - "$repo_dir" <<'PY'
@@ -65,6 +67,8 @@ if provenance["license"] != "Apache-2.0":
     raise SystemExit("SOURCE_PROVENANCE.json license mismatch")
 if provenance["implementation_source_included"] is not False:
     raise SystemExit("binary-only source boundary is not recorded")
+if provenance["source_build_supported_from_distribution"] is not False:
+    raise SystemExit("source-build boundary is not recorded")
 if provenance["build_record"]["source_repository_visibility"] != "non-public":
     raise SystemExit("build-source visibility is not recorded accurately")
 
@@ -110,7 +114,13 @@ while IFS= read -r shell_file; do
     bash -n "$shell_file"
 done < <(find "$repo_dir/scripts" -maxdepth 1 -type f -name '*.sh' -print)
 
-python3 -m py_compile "$repo_dir/scripts/verify_tiny_solution.py"
+python3 - "$repo_dir/scripts/verify_tiny_solution.py" <<'PY'
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+compile(path.read_text(), str(path), "exec")
+PY
 
 if [[ ! -x "$repo_dir/bin/cuLoRADS" || ! -x "$repo_dir/bin/cuLoRADS.bin" ]]; then
     echo "Binary inspection copies are not executable." >&2
